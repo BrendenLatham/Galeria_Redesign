@@ -3,9 +3,11 @@ import React, { useContext, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { ShopContext } from "./context/shop-context";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../context/AuthContext';
 import "bootstrap";
 
 export const CartItem = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const {
     cartItems,
@@ -54,6 +56,7 @@ export const CartItem = () => {
     const order = {
       items: cartItems,
       total: calculateTotal(),
+      username: user.username,
       // Add any other information you need for the order
     };
 

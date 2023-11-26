@@ -19,45 +19,37 @@ function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const endpoint = isLogin ? "/login" : "/signup"; // Update with your server's API endpoints
+    const endpoint = isLogin ? "/login" : "/signup";
     if (!isLogin && password !== passwordConfirm) {
       setServerMessage("Passwords do not match");
-      return; // Don't submit to server if passwords don't match
+      return;
     }
-    const userData = isLogin
-      ? { username, password }
-      : { username, email, password };
-
+    const userData = isLogin ? { username, password } : { username, email, password };
+  
     try {
-      console.log("Submitting the following user data:", userData);
-      const response = await axios.post(
-        `http://localhost:5000${endpoint}`,
-        userData
-      ); // Update with your server's URL
+      const response = await axios.post(`http://localhost:5000${endpoint}`, userData);
       console.log("Response", response);
-      if (
-        (response &&
-          response.data &&
-          response.data.message === "Login successful") ||
-        "Registration successful"
-      ) {
-        // Handle the successful login
-        localStorage.setItem("token", response.data.token);
-        login(userData);
-        if (userData.username === "Admin") {
-          navigate("/panel");
+  
+      // Ensure the server message is present
+      if (response.data && response.data.message) {
+        if (["Login successful", "Registration successful"].includes(response.data.message)) {
+          // Handle the successful login
+          localStorage.setItem("token", response.data.token);
+          login(userData);
+          navigate(userData.username === "Admin" ? "/panel" : "/");
         } else {
-          navigate("/");
+          // Handle any other server messages that are considered successful
+          setServerMessage(response.data.message);
         }
+      } else {
+        // Handle unexpected server response
+        setServerMessage("Unexpected response from the server.");
       }
     } catch (error) {
-      console.error(error.response.data.message || "Error occurred");
-      if (isLogin) {
-        setAuthError(true);
-        setServerMessage(error.response.data.message);
-      } else {
-        setServerMessage(error.response.data.message);
-      }
+      const errorMessage = error.response?.data?.message || error.message || "Error occurred";
+      console.error(errorMessage);
+      setServerMessage(errorMessage);
+      setAuthError(true);
     }
   };
   return (

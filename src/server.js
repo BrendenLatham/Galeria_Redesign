@@ -128,8 +128,25 @@ app.post('/orders', async (req, res) => {
     res.status(201).json({ message: 'Order created successfully', orderId: result.insertedId });
   } catch (error) {
     res.status(500).json({ message: 'Failed to create order', error: error.toString() });
-  } finally {
-    await client.close();
   }
 });
 
+app.get('/orders/:username', async (req, res) => {
+  const { username } = req.params;
+  
+  // Authentication check here: make sure the user is authorized to fetch their orders
+
+  try {
+    const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    await client.connect();
+    const db = client.db('orders');
+    const ordersCollection = db.collection('unfilled'); // This should be the collection where orders are stored
+    console.log('Fetching orders for username:', username);
+    // Fetch orders from the database where the 'userId' field matches the provided userId
+    const orders = await ordersCollection.find({ username }).toArray();
+    console.log('Orders found:', orders);
+    res.json(orders);
+  } catch (error) {
+    res.status(500).send('Error fetching orders');
+  }
+});

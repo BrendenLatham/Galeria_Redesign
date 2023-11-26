@@ -15,6 +15,7 @@ import ShoppingCartPopup from "./cart/ShoppingCart";
 import Layout from "./Layout";
 import NavBar1 from "../component/navbar/NavBar1";
 import Footer from "../component/footer/Footer";
+import AccountPage from "./login/AccountPage";
 import { CartItem } from "./cart/cart-test";
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/panel" element={<AdminPanel />} />
             <Route path="/search-result" element={<SearchResult />} />
             <Route path="/product/:objectId" element={<ProductPage />} />
+            <Route path="/AccountPage/:username" element={<AccountPage />} />
             <Route path="/ShoppingCartPopup" element={<ShoppingCartPopup />} />
             <Route path="/cart" element={<CartItem />} />
           </Routes>
