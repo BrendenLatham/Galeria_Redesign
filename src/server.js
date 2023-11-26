@@ -114,3 +114,22 @@ app.get('/unfilled', async (req, res) => {
   }
 });
 
+app.post('/orders', async (req, res) => {
+  const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  try {
+    await client.connect();
+    const db = client.db('orders'); // Replace with your actual database name
+    const ordersCollection = db.collection('unfilled');
+
+    const order = req.body; // This should match the order object structure in your client-side code
+
+    const result = await ordersCollection.insertOne(order);
+    res.status(201).json({ message: 'Order created successfully', orderId: result.insertedId });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to create order', error: error.toString() });
+  } finally {
+    await client.close();
+  }
+});
+

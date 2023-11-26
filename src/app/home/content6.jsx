@@ -1,4 +1,4 @@
-//this is working for display all the products
+// content6.jsx
 
 import React, { useState, useEffect } from "react";
 import ProductContainer3 from "../../component/product-card/productContainer3";

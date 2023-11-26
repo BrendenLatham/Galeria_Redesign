@@ -35,10 +35,10 @@ function AdminPanel() {
                 {order.items.map((item, index) => (
                   <li key={index} className="order-item">
                     <p className="order-text">
-                      Product Code: {item.productCode}
+                      Product Code: {item.id}
                     </p>
                     <p className="order-text">
-                      Product Name: {item.productName}
+                      Product Name: {item.nameType}
                     </p>
                     <p className="order-text">Quantity: {item.quantity}</p>
                     <p className="order-text">Price: ${item.price}</p>
@@ -46,7 +46,7 @@ function AdminPanel() {
                 ))}
               </ul>
               <p className="order-total-price">
-                Total Price: ${order.totalPrice}
+                Total Price: ${order.total}
               </p>
             </div>
           </li>

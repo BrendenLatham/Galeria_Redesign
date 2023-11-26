@@ -1,9 +1,12 @@
+// cart-test.jsx
 import React, { useContext, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { ShopContext } from "./context/shop-context";
+import { useNavigate } from "react-router-dom";
 import "bootstrap";
 
 export const CartItem = () => {
+  const navigate = useNavigate();
   const {
     cartItems,
     addToCart,
@@ -18,6 +21,11 @@ export const CartItem = () => {
     email: "", // email text-box
     address: "", // address text-box
   });
+
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
   const sendEmail = () => {
     const params = {
       user_email: inputValues.email,
@@ -34,6 +42,45 @@ export const CartItem = () => {
       .catch((error) => {
         console.log(error.text);
       });
+  };
+
+  const handleCheckout = async () => {
+    // Check if the cart is empty
+    if (cartItems.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    const order = {
+      items: cartItems,
+      total: calculateTotal(),
+      // Add any other information you need for the order
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Add authorization headers if needed
+        },
+        body: JSON.stringify(order),
+      });
+
+      const responseData = await response.json();
+      if (response.ok) {
+        sendEmail();
+        // Clear the cart after successful checkout
+        clearCart();
+      } else {
+        // Handle errors here
+        alert("Checkout failed: " + responseData.message);
+      }
+    } catch (error) {
+      // Handle the error here
+      console.error("Checkout error: ", error);
+      alert("An error occurred during checkout.");
+    }
   };
 
   const handleInputChange = (event, inputName) => {
@@ -121,7 +168,7 @@ export const CartItem = () => {
               placeholder="Enter Shipping Address"
               className="address-textbox"
             />
-            <button onClick={sendEmail} className="checkoutbutton">
+            <button onClick={handleCheckout} className="checkoutbutton">
               Checkout
             </button>
           </div>

@@ -1,3 +1,4 @@
+// Layout.jsx
 import "../style/index.css";
 import { AuthProvider } from "../context/AuthContext";
 import { ShopContextProvider } from "./cart/context/shop-context";
