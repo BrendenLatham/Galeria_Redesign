@@ -117,7 +117,7 @@ const NavBar1 = () => {
                 <ul className={`dropdown-menu dropdown-style ${showMoreDropdown ? "show" : ""}`} aria-labelledby="navbarDropdownMoreLink">
                   <li><button className="dropdown-item" onClick={() => user ? handleNavigate(`/AccountPage/${user.username}`) : handleNavigate('/LoginPage')}>{user ? "Account" : "Log In"}</button></li>
                   <li><button className="dropdown-item" onClick={() => handleNavigate('/saved')}>Saved for later</button></li>
-                  <li><button className="dropdown-item" onClick={() => handleNavigate('/info')}>Info</button></li>
+                  <li><button className="dropdown-item" onClick={() => handleNavigate('/Info')}>Info</button></li>
                 </ul>
               </li>
               <li className="nav-item">

@@ -17,6 +17,7 @@ import NavBar1 from "../component/navbar/NavBar1";
 import Footer from "../component/footer/Footer";
 import AccountPage from "./login/AccountPage";
 import { CartItem } from "./cart/cart-test";
+import Info from "../Info";
 function App() {
   return (
     <div>
@@ -35,6 +36,8 @@ function App() {
             <Route path="/AccountPage/:username" element={<AccountPage />} />
             <Route path="/ShoppingCartPopup" element={<ShoppingCartPopup />} />
             <Route path="/cart" element={<CartItem />} />
+            <Route path="/Info" element={<Info />} />
+
           </Routes>
         </Router>
       </Layout>
